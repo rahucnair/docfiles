@@ -1,0 +1,14 @@
+web:
+  build: .
+  container_name: web-server
+  ports:
+   - "80:80"
+  volumes:
+   - "/var/www/html/drupal-docroot:/var/www/html/drupal-docroot"
+  links:
+   - mysql
+mysql:
+  image: mysql
+  container_name: mysql
+  volumes:
+   - /var/lib/mysql:/var/lib/mysql

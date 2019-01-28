@@ -1,0 +1,8 @@
+FROM mysql:5.7
+RUN apt-get update -y
+RUN apt-get upgrade -y
+RUN apt install -y vim curl git
+COPY config/mysql-start.sh /tmp
+COPY config/deploy-db.sh /tmp
+
+

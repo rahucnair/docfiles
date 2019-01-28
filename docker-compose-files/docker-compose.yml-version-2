@@ -1,0 +1,33 @@
+version: "3"
+services:
+  web:
+    build: .
+    container_name: web-server
+    ports:
+     - "80:80"
+    networks:
+     - drupalweb-network
+    volumes:
+     - "/var/www/html/drupal-docroot:/var/www/html/drupal-docroot"
+    restart: always
+    command: sh /tmp/service.sh
+    links:
+     - mysql
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    volumes:
+     - /var/lib/mysql:/var/lib/mysql
+    command: chown -R mysql:mysql /var/lib/mysql
+    command: usermod -d /var/lib/mysql/ mysql
+    command: tail -f /var/log/mysql/error.log
+    restart: always
+    environment:
+     MYSQL_ROOT_PASSWORD: drupal123
+     MYSQL_DATABASE: drupal
+     MYSQL_USER: drupal_admin
+     MYSQL_PASSWORD: drupal123
+    networks:
+     - drupalweb-network
+networks:
+  drupalweb-network:

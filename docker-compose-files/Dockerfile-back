@@ -1,0 +1,11 @@
+FROM ubuntu:latest AS ubuntu-webserver
+RUN apt-get update -y 
+RUN apt-get upgrade -y 
+RUN apt install -y apt-utils
+ENV TZ=America/Los_Angeles
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone 
+RUN apt install -y nginx 
+RUN apt install -y php php7.2-cli php7.2-common php-mysql php-cli php7.2-xml php7.2-zip php-mbstring php-mbstring php7.2-curl php7.2-gd
+RUN apt-get install -y openssl
+RUN apt install -y vim curl wget zip unzip git 
+

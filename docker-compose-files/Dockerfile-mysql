@@ -1,0 +1,9 @@
+FROM ubuntu:18.04
+RUN apt-get update -y
+RUN apt-get upgrade -y
+RUN apt install -y vim curl git
+RUN apt install mysql-server -y
+COPY config/mysql-start.sh /tmp/
+COPY config/deploy-db.sh /tmp/
+
+
