@@ -1,0 +1,51 @@
+version: "3"
+services:
+  web1:
+    build: .
+    container_name: web-server-1
+    ports:
+     - "8080:80"
+    networks:
+     - drupalweb-network
+    volumes:
+     - "/var/www/html/drupal-docroot:/var/www/html/drupal-docroot"
+    restart: always
+    command: sh -x /tmp/deploy-code.sh
+    command: sh -x /tmp/service.sh
+    links:
+     - mysql
+  
+  web2:
+    build: .
+    container_name: web-server-2
+    ports:
+     - "8082:80"
+    networks:
+     - drupalweb-network
+    volumes:
+     - "/var/www/html/drupal-docroot:/var/www/html/drupal-docroot"
+    restart: always
+    command: sh -x /tmp/service.sh
+    links:
+     - mysql
+
+  mysql:
+    build:
+       context: .
+       dockerfile: Dockerfile-mysql
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: drupal123
+      MYSQL_DATABASE: drupal
+      MYSQL_USER: drupal_admin
+      MYSQL_PASSWORD: drupal123
+    ports:
+     - "3306:3306"
+    volumes:
+     - /dbdata:/var/lib/mysql
+       #restart: always
+    command: sh -x /tmp/deploy-db.sh
+    networks:
+       - drupalweb-network
+networks:
+  drupalweb-network:
